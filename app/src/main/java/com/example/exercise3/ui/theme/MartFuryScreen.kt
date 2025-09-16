@@ -30,9 +30,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,27 +80,56 @@ fun MartFuryScreen(){
 
 @Composable
 fun TopBar() {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFC107))
-            .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+    var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color(0xFFFFC107))
+        .padding(vertical = 8.dp)
     ) {
 
-        Text(
-            text = "martfury",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 20.sp
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFC107))
+                .statusBarsPadding()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "mart",
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                fontSize = 20.sp
+            )
+            Text(
+                text = "fury",
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(Icons.Default.Favorite, contentDescription = "Wishlist")
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
+        }
+
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            placeholder = { Text(text = "I'm shopping for...", color = Color.Gray) },
+            modifier = Modifier.fillMaxWidth(0.9f)
+                .align(Alignment.CenterHorizontally)
+                .height(35.dp)
+                .background(Color.White, RoundedCornerShape(12.dp)),
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") }
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(Icons.Default.Favorite, contentDescription = "Wishlist")
-        Spacer(modifier = Modifier.width(8.dp))
-        Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
     }
+
+
 }
 
 @Composable
@@ -166,7 +201,7 @@ fun FeaturedCategories(categories: List<Category>) {
         Spacer(Modifier.height(8.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = Modifier.height(240.dp) // cao vừa đủ cho 2 dòng
+            modifier = Modifier.height(190.dp)
         ) {
             items(categories) { category ->
                 Column(
